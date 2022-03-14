@@ -1,0 +1,68 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: jenkins-agent-nodejs-16
+  annotations:
+    description: This template deploys a Jenkins agent to build Node.js v16.x based projects, through npm and npx v8.x
+    iconClass: icon-jenkins
+    openshift.io/display-name: Jenkins Agent Node.js (v16.x)
+    openshift.io/documentation-url: https://github.com/simongolms/ods-jenkins-agent-nodejs
+    openshift.io/provider-display-name: Simon Golms
+    openshift.io/support-url: https://github.com/simongolms/ods-jenkins-agent-nodejs
+    tags: "jenkins,agent,nodejs"
+  labels:
+    template: jenkins-agent-nodejs-16
+labels:
+  app: jenkins-agent-nodejs-16
+  component: jenkins-agent
+  part-of: jenkins-agent-nodejs
+  template: jenkins-agent-nodejs-16
+parameters:
+  - name: NEXUS_AUTH
+    value: ""
+  - name: NEXUS_URL
+    value: ""
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: jenkins-agent-nodejs-16
+    spec:
+      dockerImageRepository: jenkins-agent-nodejs-16
+      lookupPolicy:
+        local: true
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: jenkins-agent-nodejs-16
+    spec:
+      failedBuildsHistoryLimit: 5
+      output:
+        to:
+          kind: ImageStreamTag
+          name: jenkins-agent-nodejs-16:latest
+      source:
+        git:
+          ref: main
+          uri: https://github.com/simongolms/ods-jenkins-agent-nodejs.git
+        type: Git
+      strategy:
+        dockerStrategy:
+          buildArgs:
+            - name: NEXUS_AUTH
+              value: ${NEXUS_AUTH}
+            - name: NEXUS_URL
+              value: ${NEXUS_URL}
+            - name: NODEJS_VERSION
+              value: 16.x
+            - name: NPM_VERSION
+              value: 8.x
+          dockerfilePath: Dockerfile
+        type: Docker
+      successfulBuildsHistoryLimit: 5
+      triggers:
+        - type: "ConfigChange"
+message: >-
+  The image is built in your active namespace and is named `jenkins-agent-nodejs-16`.
+
+  It can be referenced in a `Jenkinsfile` with `<NAMESPACE>/jenkins-agent-nodejs-16:latest`.
