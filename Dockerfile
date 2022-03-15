@@ -1,14 +1,15 @@
 FROM opendevstackorg/ods-jenkins-agent-base-ubi8:4.x
 
 # Labels consumed by Red Hat build service
-LABEL com.redhat.component="jenkins-agent-nodejs-ubi8-docker" \
-    base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
+LABEL base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
+    description="The Jenkins Agent Node.js image has the Node.js and npm tools on top of the ODS Jenkins Agent Base Image." \
+    io.k8s.display-name="Jenkins Agent Node.js" \
+    io.openshift.tags="openshift,jenkins,agent,nodejs" \
     maintainer="Simon Golms <development@gol.ms>" \
-    name="openshift/jenkins-agent-nodejs-ubi8" \
-    description="The jenkins agent nodejs image has the nodejs tools on top of the jenkins agent base image." \
-    version="1.0.0" \
-    io.k8s.display-name="Jenkins Agent NodeJs" \
-    io.openshift.tags="openshift,jenkins,agent,nodejs"
+    name="ods-jenkins-agent-nodejs-ubi8" \
+    release="1" \
+    summary="Provides the latest release of Jenkins Agent Node.js Universal Base Image 8." \
+    version="1.0.0"
 
 ARG NEXUS_AUTH
 ARG NEXUS_URL
