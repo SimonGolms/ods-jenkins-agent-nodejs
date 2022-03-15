@@ -16,10 +16,10 @@ ARG NEXUS_URL
 ARG NODEJS_VERSION
 ARG NPM_VERSION
 
-ENV NPM_CONFIG_PREFIX=$HOME/.npm-global \
-    PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH \
-    LANG=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    NPM_CONFIG_PREFIX=$HOME/.npm-global \
+    PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
 
 # Build image with the latest (security) updates
 RUN dnf -y update
