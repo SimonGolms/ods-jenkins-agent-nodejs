@@ -26,17 +26,32 @@ It can be referenced in a `Jenkinsfile` with `<PROJECT>/jenkins-agent-nodejs-<VE
 ```groovy
 // Jenkinsfile
 odsComponentPipeline(
+  imageStreamTag: "foo-cd/jenkins-agent-nodejs-16:latest",
+)
+```
+
+sed -i 's/version="._"/version="1.0.x"/g' Dockerfile; sed -i 's/ref: ._/ref: 1.0.x/g' jenkins-agent-nodejs-\*-template.yaml
+
+```groovy
+// Jenkinsfile with custom resources
+def dockerRegistry
+
+node {
+  dockerRegistry = env.DOCKER_REGISTRY
+}
+
+odsComponentPipeline(
   podContainers: [
     containerTemplate(
       alwaysPullImage: true,
-      args: '${computer.jnlpmac} ${computer.name}'
-      image: "foo-cd/jenkins-agent-nodejs-16:latest",
+      args: '${computer.jnlpmac} ${computer.name}',
+      image: "${dockerRegistry}/foo-cd/jenkins-agent-nodejs-16:latest",
       name: 'jnlp',
       resourceLimitCpu: '3',
       resourceLimitMemory: '8Gi',
       resourceRequestCpu: '10m',
       resourceRequestMemory: '4Gi',
-      workingDir: '/tmp',
+      workingDir: '/tmp'
     )
   ],
 )
