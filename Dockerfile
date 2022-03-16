@@ -9,7 +9,7 @@ LABEL base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
     name="ods-jenkins-agent-nodejs-ubi8" \
     release="1" \
     summary="Provides the latest release of Jenkins Agent Node.js Universal Base Image 8." \
-    version="1.0.1"
+    version="1.0.2"
 
 ARG APP_DNS
 ARG AQUASEC_SCANNERCLI_URL

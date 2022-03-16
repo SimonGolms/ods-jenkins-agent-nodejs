@@ -1,6 +1,6 @@
 # OpenDevStack 4.x - Jenkins Agent Node.js
 
-[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/releases)
+[![Version](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/releases)
 [![License: Apache-2.0](https://img.shields.io/github/license/simongolms/ods-jenkins-agent-nodejs)](https://github.com/simongolms/ods-jenkins-agent-nodejs/blob/master/LICENSE)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/simongolms/ods-jenkins-agent-nodejs/graphs/commit-activity)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-green.svg)](https://conventionalcommits.org)
