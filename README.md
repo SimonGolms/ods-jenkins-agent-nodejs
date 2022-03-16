@@ -37,9 +37,6 @@ odsComponentPipeline(
   imageStreamTag: "foo-cd/jenkins-agent-nodejs-16:latest",
 )
 ```
-
-sed -i 's/version="._"/version="1.0.x"/g' Dockerfile; sed -i 's/ref: ._/ref: 1.0.x/g' jenkins-agent-nodejs-\*-template.yaml
-
 ```groovy
 // Jenkinsfile with custom resources
 def dockerRegistry
