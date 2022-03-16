@@ -18,6 +18,10 @@ labels:
   part-of: jenkins-agent-nodejs
   template: jenkins-agent-nodejs-current
 parameters:
+  - name: APP_DNS
+    value: ""
+  - name: AQUASEC_SCANNERCLI_URL
+    value: ""
   - name: NEXUS_AUTH
     value: ""
   - name: NEXUS_URL
@@ -49,6 +53,10 @@ objects:
       strategy:
         dockerStrategy:
           buildArgs:
+            - name: APP_DNS
+              value: ${APP_DNS}
+            - name: AQUASEC_SCANNERCLI_URL
+              value: ${AQUASEC_SCANNERCLI_URL}
             - name: NEXUS_AUTH
               value: ${NEXUS_AUTH}
             - name: NEXUS_URL

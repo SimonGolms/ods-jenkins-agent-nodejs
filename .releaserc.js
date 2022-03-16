@@ -59,13 +59,19 @@ module.exports = {
       {
         verifyReleaseCmd:
           "sed -i 's/version=\".*\"/version=\"${nextRelease.version}\"/g' Dockerfile && \
+           sed -i 's/ref: .*/ref: v${nextRelease.version}/g' jenkins-agent-nodejs-*-template.yaml && \
            sed -i 's/version-.*-blue/version-${nextRelease.version}-blue/g' README.md",
       },
     ],
     [
       "@semantic-release/git",
       {
-        assets: ["CHANGELOG.md", "Dockerfile", "README.md"],
+        assets: [
+          "CHANGELOG.md",
+          "Dockerfile",
+          "jenkins-agent-nodejs-*-template.yaml",
+          "README.md",
+        ],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },

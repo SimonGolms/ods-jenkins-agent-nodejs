@@ -11,6 +11,8 @@ LABEL base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
     summary="Provides the latest release of Jenkins Agent Node.js Universal Base Image 8." \
     version="1.0.1"
 
+ARG APP_DNS
+ARG AQUASEC_SCANNERCLI_URL
 ARG NEXUS_AUTH
 ARG NEXUS_URL
 ARG NODEJS_VERSION
@@ -20,6 +22,19 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
+
+# Optional: Import OpenShift Certificates
+RUN if [ ! -z $APP_DNS ] ; then \
+    # https://github.com/opendevstack/ods-core/blob/c90b0d73d1e49666f80c2278df47e7b070d693d2/jenkins/agent-base/Dockerfile.ubi8#L27
+    import_certs.sh; \
+    fi
+
+# Optional: Install Aqua Scanner CLI
+RUN if [ ! -z $AQUASEC_SCANNERCLI_URL ] ; then \
+    curl --create-dirs --silent --show-error --location $AQUASEC_SCANNERCLI_URL --output /usr/local/bin/aquasec \
+    && chmod +rwx /usr/local/bin/aquasec \
+    && echo aquasec version: $(aquasec version); \
+    fi
 
 # Build image with the latest (security) updates
 RUN dnf -y update
