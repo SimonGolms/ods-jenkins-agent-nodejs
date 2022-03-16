@@ -58,7 +58,8 @@ module.exports = {
       "@semantic-release/exec",
       {
         verifyReleaseCmd:
-          'sed -i \'s/version=".*"/version="${nextRelease.version}"/g\' Dockerfile',
+          "sed -i 's/version=\".*\"/version=\"${nextRelease.version}\"/g' Dockerfile && \
+           sed -i 's/version-.*-blue/version-${nextRelease.version}-blue/g' README.md",
       },
     ],
     [
