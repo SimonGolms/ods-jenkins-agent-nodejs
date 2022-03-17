@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/compare/v1.0.2...v2.0.0) (2022-03-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace base-image and remove parameter APP_DNS and AQUASEC_SCANNERCLI_URL
+
+### Features
+
+* use ods as base-image ([dae9a72](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/commit/dae9a726a4373bb3994031308e171b96f199279c))
+
+
+### Documentation
+
+* **README:** remove intentionally added line of text ([81a54d2](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/commit/81a54d2a784419530f9546057aeec7d08e1cdc5e))
+
 ### [1.0.2](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/compare/v1.0.1...v1.0.2) (2022-03-16)
 
 
