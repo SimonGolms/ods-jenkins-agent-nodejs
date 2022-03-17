@@ -1,7 +1,7 @@
-FROM opendevstackorg/ods-jenkins-agent-base-ubi8:4.x
+FROM image-registry.openshift-image-registry.svc:5000/ods/jenkins-agent-base:4.x
 
 # Labels consumed by Red Hat build service
-LABEL base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
+LABEL base.name="ods/jenkins-agent-base:4.x" \
     description="The Jenkins Agent Node.js image has the Node.js and npm tools on top of the ODS Jenkins Agent Base Image." \
     io.k8s.display-name="Jenkins Agent Node.js" \
     io.openshift.tags="openshift,jenkins,agent,nodejs" \
@@ -11,8 +11,6 @@ LABEL base.name="opendevstackorg/ods-jenkins-agent-base-ubi8:4.x" \
     summary="Provides the latest release of Jenkins Agent Node.js Universal Base Image 8." \
     version="1.0.2"
 
-ARG APP_DNS
-ARG AQUASEC_SCANNERCLI_URL
 ARG NEXUS_AUTH
 ARG NEXUS_URL
 ARG NODEJS_VERSION
@@ -23,18 +21,10 @@ ENV LANG=en_US.UTF-8 \
     NPM_CONFIG_PREFIX=$HOME/.npm-global \
     PATH=$HOME/node_modules/.bin/:$HOME/.npm-global/bin/:$PATH
 
-# Optional: Import OpenShift Certificates
-RUN if [ ! -z $APP_DNS ] ; then \
-    # https://github.com/opendevstack/ods-core/blob/c90b0d73d1e49666f80c2278df47e7b070d693d2/jenkins/agent-base/Dockerfile.ubi8#L27
-    import_certs.sh; \
-    fi
-
-# Optional: Install Aqua Scanner CLI
-RUN if [ ! -z $AQUASEC_SCANNERCLI_URL ] ; then \
-    curl --create-dirs --silent --show-error --location $AQUASEC_SCANNERCLI_URL --output /usr/local/bin/aquasec \
-    && chmod +rwx /usr/local/bin/aquasec \
-    && echo aquasec version: $(aquasec version); \
-    fi
+# The BaseImage in my ODS instance is still delivered with the CentOS 8 repository
+# This leads to failures when installing additional packages.
+# As a bugfix it is enough to remove it. https://github.com/opendevstack/ods-core/pull/1106
+RUN rm -f /etc/yum.repos.d/centos8.repo
 
 # Build image with the latest (security) updates
 RUN dnf -y update

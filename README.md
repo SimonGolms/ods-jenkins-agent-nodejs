@@ -11,7 +11,7 @@
 
 ## Introduction
 
-This Jenkins agent is used to build Node.js based projects, thru `npm` and `npx`. It use [opendevstackorg/ods-jenkins-agent-base-ubi8:4.x](https://hub.docker.com/r/opendevstackorg/ods-jenkins-agent-base-ubi8) as base image in an OpenShift 4 Instance.
+This Jenkins agent is used to build Node.js based projects, thru `npm` and `npx`. It use `ods/jenkins-agent-base:4.x` as base image in an OpenShift 4 Instance with OpenDevStack 4.x.
 
 ### Features
 
@@ -19,46 +19,36 @@ This Jenkins agent is used to build Node.js based projects, thru `npm` and `npx`
 2. npm v8.x | latest
 3. (optional) Nexus configuration
 
-### Limitations
-
-Due to a bug ([#1093](https://github.com/opendevstack/ods-core/issues/1093)) with the `image-registry.openshift-image-registry.svc:5000/ods/jenkins-agent-base:4.x` image, which has not yet been fixed in my OpenShift instance, the `opendevstackorg/ods-jenkins-agent-base-ubi8:4.x` image from DockerHub is used in the meantime. Unfortunately, this comes with the following limitations, which will be handled during the initial setup in the OpenShift instance.
-
-1. **Scan with SonarQube**: To use the [`odsComponentStageScanWithSonar`](https://www.opendevstack.org/ods-documentation/opendevstack/4.x/jenkins-shared-library/component-pipeline.html#_odscomponentstagescanwithsonar) the certificates of the OpenShift cluster instance would have to be imported into the Jenkins agent. Therefore the parameter `APP_DNS` must be set to specify the OpenShift URL `docker-registry-default.apps.COMPANY.com`.
-2. **Scan with Aqua Sec**: To use the [`odsComponentStageScanWithAqua`](https://www.opendevstack.org/ods-documentation/opendevstack/4.x/jenkins-shared-library/component-pipeline.html#_odscomponentstagescanwithaqua) the necessary AquaSec CLI must be downloaded ([Aqua Support: Aqua Scanner Executable Binary](https://support.aquasec.com/support/solutions/articles/16000120205-aqua-scanner-executable-binary)), which is only available for registered AquaSec users. Therefore the parameter `AQUASEC_SCANNERCLI_URL` must be set to specify the download URL `https://USERNAME:PASSWORD@download.aquasec.com/scanner/VERSION/scannercli`.
-
 ### Usage
 
 The image is built in your active OpenShift Project and is named `jenkins-agent-nodejs-<VERSION>`.
 It can be referenced in a `Jenkinsfile` with `<PROJECT>/jenkins-agent-nodejs-<VERSION>`.
 
-```groovy
+```diff
 // Jenkinsfile
 odsComponentPipeline(
-  imageStreamTag: "foo-cd/jenkins-agent-nodejs-16:latest",
+-  imageStreamTag: 'ods/jenkins-agent-nodejs12:4.x',
++  imageStreamTag: "foo-cd/jenkins-agent-nodejs-16:latest",
 )
 ```
-```groovy
-// Jenkinsfile with custom resources
-def dockerRegistry
 
-node {
-  dockerRegistry = env.DOCKER_REGISTRY
-}
-
+```diff
+// Jenkinsfile with custom agent resources
 odsComponentPipeline(
-  podContainers: [
-    containerTemplate(
-      alwaysPullImage: true,
-      args: '${computer.jnlpmac} ${computer.name}',
-      image: "${dockerRegistry}/foo-cd/jenkins-agent-nodejs-16:latest",
-      name: 'jnlp',
-      resourceLimitCpu: '3',
-      resourceLimitMemory: '8Gi',
-      resourceRequestCpu: '10m',
-      resourceRequestMemory: '4Gi',
-      workingDir: '/tmp'
-    )
-  ],
+-  imageStreamTag: 'ods/jenkins-agent-nodejs12:4.x',
++  podContainers: [
++    containerTemplate(
++      alwaysPullImage: true,
++      args: '${computer.jnlpmac} ${computer.name}',
++      image: "image-registry.openshift-image-registry.svc:5000/foo-cd/jenkins-agent-nodejs-16:latest",
++      name: 'jnlp',
++      resourceLimitCpu: '3',
++      resourceLimitMemory: '8Gi',
++      resourceRequestCpu: '10m',
++      resourceRequestMemory: '4Gi',
++      workingDir: '/tmp'
++    )
++  ],
 )
 ```
 
@@ -73,14 +63,6 @@ oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nod
 oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-lts-template.yaml | oc create -f -
 # current
 oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-current-template.yaml | oc create -f -
-```
-
-```sh
-# with limitation fix
-oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-<VERSION>-template.yaml \
-  -p APP_DNS=docker-registry-default.apps.COMPANY.com \
-  -p AQUASEC_SCANNERCLI_URL=https://USERNAME:PASSWORD@download.aquasec.com/scanner/VERSION/scannercli \
-  | oc create -f -
 ```
 
 ```sh
