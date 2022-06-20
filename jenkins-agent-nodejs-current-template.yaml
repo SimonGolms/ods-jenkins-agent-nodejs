@@ -43,7 +43,7 @@ objects:
           name: jenkins-agent-nodejs-current:latest
       source:
         git:
-          ref: v2.0.0
+          ref: v2.1.0
           uri: https://github.com/simongolms/ods-jenkins-agent-nodejs.git
         type: Git
       strategy:

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/compare/v2.0.0...v2.1.0) (2022-06-20)
+
+
+### Features
+
+* add nodejs v18 template ([31d6dff](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/commit/31d6dff5edb150fbeb1d0ddb3a42f4464ab09ae6))
+
 ## [2.0.0](https://github.com/SimonGolms/ods-jenkins-agent-nodejs/compare/v1.0.2...v2.0.0) (2022-03-17)
 
 

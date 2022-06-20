@@ -9,7 +9,7 @@ LABEL base.name="ods/jenkins-agent-base:4.x" \
     name="ods-jenkins-agent-nodejs-ubi8" \
     release="1" \
     summary="Provides the latest release of Jenkins Agent Node.js Universal Base Image 8." \
-    version="2.0.0"
+    version="2.1.0"
 
 ARG NEXUS_AUTH
 ARG NEXUS_URL
