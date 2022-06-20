@@ -15,8 +15,8 @@ This Jenkins agent is used to build Node.js based projects, thru `npm` and `npx`
 
 ### Features
 
-1. Node.js v16.x | lts | current
-2. npm v8.x | latest
+1. Node.js `v16.x` | `v18.x` | `lts` | `current`
+2. npm `v8.x` | `latest`
 3. (optional) Nexus configuration
 
 ### Usage
@@ -59,6 +59,8 @@ odsComponentPipeline(
 ```sh
 # v16.x
 oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-16-template.yaml | oc create -f -
+# v18.x
+oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-18-template.yaml | oc create -f -
 # lts
 oc process -f https://raw.githubusercontent.com/SimonGolms/ods-jenkins-agent-nodejs/main/jenkins-agent-nodejs-lts-template.yaml | oc create -f -
 # current
@@ -88,6 +90,8 @@ In case of a new version of Node.js or npm is released, run the following comman
 ```sh
 # v16.x
 oc start-build jenkins-agent-nodejs-16 --follow
+# v18.x
+oc start-build jenkins-agent-nodejs-18 --follow
 # lts
 oc start-build jenkins-agent-nodejs-lts --follow
 # current
@@ -112,11 +116,13 @@ Go to your Build Configs <https://OPENSHIFT_INSTANCE/k8s/ns/PROJECT/buildconfigs
 ```sh
 # v16.x
 oc delete all --selector app=jenkins-agent-nodejs-16
+# v18.x
+oc delete all --selector app=jenkins-agent-nodejs-18
 # lts
 oc delete all --selector app=jenkins-agent-nodejs-lts
 # current
 oc delete all --selector app=jenkins-agent-nodejs-current
-# v16.x & lts & current
+# v16.x & v18.x & lts & current
 oc delete all --selector part-of=jenkins-agent-nodejs
 ```
 
